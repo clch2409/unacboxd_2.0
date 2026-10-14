@@ -1,3 +1,16 @@
+<?php
+
+  $mensaje_negativo = "";
+
+  if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['m'])){
+    $mensaje_negativo = match($_GET['m']){
+      'credenciales' => "Usuario o contraseña incorrectos; o usuario no existente",
+      'vacio' => "Todos los campos sin obligatorios."
+    };
+  }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,6 +36,15 @@
           <input type="text" name="nombre_usuario" placeholder="Nombre de usuario" required>
           <input type="password" name="contrasena" placeholder="Contraseña" required>
           <button type="submit" class="btn-auth">Entrar</button>
+          <?php if (!empty($mensaje_negativo)): ?>
+            <div class="alert alert-error">
+              <span class="material-symbols-outlined alert-icon">error</span>
+              <span>
+                  <?= $mensaje_negativo ?>
+              </span>
+            </div>
+          <?php endif; ?>
+
         </form>
         <div class="auth-links">
           <a href="registro.php">¿No tienes cuenta? Regístrate</a><br><br>

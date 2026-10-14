@@ -145,3 +145,44 @@ body {
 .auth-links a:hover {
   color: var(--mist);
 }
+
+/* ========================================= */
+/* MENSAJES DE ALERTA Y ERRORES              */
+/* ========================================= */
+
+.alert {
+  padding: 12px var(--s-spacing);
+  margin-bottom: var(--s-spacing);
+  border-radius: var(--s-spacing);
+  font-size: 1.4rem;
+  text-align: center;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-spacing);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.alert-error {
+  background-color: rgba(52, 32, 25, 0.6);
+  color: var(--mist);
+  border: 2px solid var(--brown);
+  box-shadow: 0px 0px 10px 1px rgba(124, 85, 46, 0.4);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.alert-icon {
+  font-size: 2rem;
+  color: #ff6b6b;
+}

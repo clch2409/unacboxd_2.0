@@ -1,7 +1,7 @@
 <?php
-  require_once (realpath(dirname(__FILE__)).'/../bd/bd_conection.php');
-  require_once (realpath(dirname(__FILE__)).'/../model/Usuario.php');
-  require_once (realpath(dirname(__FILE__)).'/../model/RolController.php');
+  require_once __DIR__.'/../bd/bd_conection.php';
+  require_once __DIR__.'/../model/Usuario.php';
+  require_once __DIR__.'/../controller/RolController.php';
 
   class UsuarioController{
 
@@ -16,15 +16,23 @@
 
     public function crearUsuario(string $nombre_usuario, string $email, string $contrasena, string $pregunta_secreta){
       try{
-        $contrasena_hash = password_hash($contrasena, PASSWORD_DEFAULT);
-        $prep = $this->con->prepare("INSERT INTO usuario (nombre_usuario, email, contrasena, pregunta_secreta, id_rol) VALUES (:nombre_usuario, :email, :contra, :preg_sec)");
+        $prep = $this->con->prepare("SELECT nombre_usuario FROM usuario WHERE nombre_usuario = :username");
         $prep->execute([
-          ":nombre_usuario" => $nombre_usuario,
-          ":email" => $email,
-          ":contra" => $contrasena_hash,
-          ":preg_sec" => $pregunta_secreta,
+          ":username" => $nombre_usuario,
         ]);
-        return true;
+        if ($prep->rowCount() > 0){
+          return false;
+        }
+        else{
+          $prep = $this->con->prepare("INSERT INTO usuario (nombre_usuario, email, contrasena, pregunta_secreta, id_rol) VALUES (:username, :email, :password, :secret_question, 2)");
+          $prep->execute([
+            ":username" => $nombre_usuario,
+            ":email" => $email,
+            ":password" => password_hash($contrasena, PASSWORD_DEFAULT),
+            ":secret_question" => $pregunta_secreta,
+          ]);
+          return true;
+        }
       }
       catch(PDOException $e){
         var_dump($e);
@@ -36,11 +44,11 @@
       try{
         $usuario_encontrado = $this->buscarUsuarioPorNombreUsuario($nombre_usuario);
 
-        if (password_verify($contrasena, $usuario_encontrado->getContrasena())){
-          return true;
+        if (!$usuario_encontrado || !password_verify($contrasena, $usuario_encontrado->getContrasena())){
+          return false;
         }
         else{
-          return false;
+          return $usuario_encontrado;
         }
 
       }
