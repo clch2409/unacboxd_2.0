@@ -1,3 +1,15 @@
+<?php
+  require_once __DIR__ . '/../controller/PeliculaController.php';
+  $pelicula_controller = new PeliculaController();
+  $peliculas = [];
+
+  if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+
+    $peliculas = $pelicula_controller->listarPeliculas();
+  }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,13 +23,13 @@
     rel="stylesheet">
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=favorite,star,close" />
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../assets/style/pag_principal.css">
 </head>
 
 <body>
   <nav>
-    <img class="img1" src="./assets/images/logo_sin_texto.png" alt="Logo">
-    <img class="img2" src="./assets/images/usuario.webp" alt="Usuario">
+    <img class="img1" src="../assets/images/logo_sin_texto.png" alt="Logo">
+    <img class="img2" src="../assets/images/usuario.webp" alt="Usuario">
   </nav>
   <p>Buscar por: </p>
   <form class="form-busqueda">
@@ -42,7 +54,7 @@
       <input type="text" name="busqueda" placeholder="Ingrese un texto para buscar" id="find-movie" readonly>
 
       <div class="form-container-filter">
-        <img class="filter-icon" src="./assets/icons/filter-icon.svg" alt="Icono de Filtrado">
+        <img class="filter-icon" src="../assets/icons/filter-icon.svg" alt="Icono de Filtrado">
         <div class="filter-options">
           <ul class="list-options">
             <li id="fav">Favoritos</li>
@@ -58,12 +70,12 @@
   </form>
 
   <div class="contenedor-img">
-    <div class="contenedor-peli">
-      <p class="peli-rating"></p>
-      <img src="./assets/posters/birdemic.jpg" alt="Imagen 1">
-      <span class="material-symbols-outlined non-favorite heart">favorite</span>
-      <span class="material-symbols-outlined non-favorite star">star</span>
-    </div>
+    <?php foreach ($peliculas as $pelicula) : ?>
+      <div class="contenedor-peli">
+        <p class="peli-rating"><?= $pelicula->calcularPromedioCalificaciones() ?? 'N/A' ?></p>
+        <img src="../<?= $pelicula->getPoster() ?>" alt="<?= $pelicula->getTitulo() ?>">
+      </div>
+    <?php endforeach; ?>
   </div>
 
   <dialog id="rating-dialog">
@@ -88,7 +100,7 @@
     </form>
   </dialog>
 
-  <script type="module" src="./main.js"></script>
+  <script type="module" src="../assets/js/pag_principal.js"></script>
 </body>
 
 </html>

@@ -1,5 +1,7 @@
 <?php
-
+  require_once (realpath(dirname(__FILE__)).'/../bd/bd_conection.php');
+  require_once (realpath(dirname(__FILE__)).'/../model/Usuario.php');
+  require_once (realpath(dirname(__FILE__)).'/../model/RolController.php');
 
   class UsuarioController{
 
@@ -9,7 +11,7 @@
     public function __construct()
     {
       $this->bd = new Database();
-      $this->con = $this->bd->conectar();
+      $this->con = $con ?? $this->bd->conectar();
     }
 
     public function crearUsuario(string $nombre_usuario, string $email, string $contrasena, string $pregunta_secreta){

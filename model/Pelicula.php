@@ -15,7 +15,6 @@ class Pelicula
     private Director $director;
     private array $generos = [];
     private array $actores = [];
-    private array $usuarios = [];
     private array $calificaciones = [];
 
     public function __construct(
@@ -129,16 +128,6 @@ class Pelicula
         $this->actores[] = $actor;
     }
 
-    public function getUsuarios(): array
-    {
-        return $this->usuarios;
-    }
-
-    public function agregarUsuario(Usuario $usuario): void
-    {
-        $this->usuarios[] = $usuario;
-    }
-
     public function getCalificaciones(): array
     {
         return $this->calificaciones;
@@ -147,5 +136,19 @@ class Pelicula
     public function agregarCalificacion(Calificacion $calificacion): void
     {
         $this->calificaciones[] = $calificacion;
+    }
+
+    public function calcularPromedioCalificaciones(): ?float
+    {
+        $totalCalificaciones = count($this->calificaciones);
+        if ($totalCalificaciones === 0) {
+            return null;
+        }
+
+        $sumaCalificaciones = array_reduce($this->calificaciones, function ($suma, Calificacion $calificacion) {
+            return $suma + $calificacion->getCalificacion();
+        }, 0);
+
+        return round($sumaCalificaciones / $totalCalificaciones, 2);
     }
 }

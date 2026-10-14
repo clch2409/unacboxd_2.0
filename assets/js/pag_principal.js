@@ -1,7 +1,5 @@
-import peliculas from "./peliculas.json" with { type: "json" };
-
-let peliculas_original = [...peliculas];
-let peliculas_filtradas = peliculas_original;
+// let peliculas_original = [...peliculas];
+// let peliculas_filtradas = peliculas_original;
 let tipoBusqueda = "";
 let idPeliCalificar = undefined;
 let modificandoCalificacion = false;
@@ -36,7 +34,7 @@ radios.addEventListener("click", obtenerTipoBusqueda);
 reset_find_icon.addEventListener("click", quitarSeleccionRadios);
 rating_send.addEventListener("click", agregarCalificacion);
 
-mostrarPeliculas();
+// mostrarPeliculas();
 
 function mostrarPeliculas() {
   let html = ``;

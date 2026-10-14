@@ -1,4 +1,6 @@
 <?php
+  require_once (realpath(dirname(__FILE__)).'/../bd/bd_conection.php');
+  require_once (realpath(dirname(__FILE__)).'/../model/Usuario.php');
 
   class RolController{
 
@@ -8,7 +10,7 @@
     public function __construct()
     {
       $this->bd = new Database();
-      $this->con = $this->bd->conectar();
+      $this->con = $con ?? $this->bd->conectar();
     }
 
     public function obtenerRolPorId(int $id_rol){

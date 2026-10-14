@@ -1,0 +1,147 @@
+:root {
+  /* Paleta (tomada de la imagen) */
+  --brown-dark: #342019;
+  --brown: #7c552e;
+  --steel: #64808e;
+  --mist: #acbfc6;
+
+  --xs-spacing: 4px;
+  --s-spacing: 8px;
+  --m-spacing: 16px;
+  --l-spacing: 20px;
+  --xl-spacing: 24px;
+  --xxl-spacing: 40px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+  font-family: "Arimo", sans-serif;
+  color: var(--mist);
+}
+
+body {
+  background-color: var(--brown-dark);
+}
+
+/* Estilos para las vistas de Login y Registro (Optimizados para evitar scroll) */
+.auth-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Usamos 100dvh (Dynamic Viewport Height) que se adapta mejor a las pantallas modernas */
+  min-height: 100dvh;
+  /* Añadimos un padding externo por si la pantalla es muy pequeña, la caja no choque con los bordes */
+  padding: var(--m-spacing);
+}
+
+.auth-container {
+  background-color: var(--steel);
+  /* Reducimos el padding de xxl (40px) a xl (24px) para que la caja no sea tan alta */
+  padding: var(--xl-spacing);
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.6);
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  /* Reducimos el gap principal */
+  gap: var(--s-spacing);
+  border-top: 5px solid var(--brown);
+}
+
+.auth-logo-container {
+  display: flex;
+  justify-content: center;
+}
+
+.auth-logo {
+  /* Reducimos ligeramente el logo de 150px a 120px */
+  max-width: 120px;
+  height: auto;
+  object-fit: contain;
+}
+
+.auth-container h2 {
+  color: var(--brown-dark);
+  text-align: center;
+  font-size: 2.2rem;
+  /* Quitamos el margen inferior porque la propiedad 'gap' del contenedor ya hace el trabajo */
+  margin-bottom: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  /* Reducimos el espacio entre los inputs */
+  gap: 12px;
+}
+
+.auth-form input[type="text"],
+.auth-form input[type="password"],
+.auth-form input[type="email"] {
+  /* Reducimos el padding interno de los inputs para ganar espacio vertical */
+  padding: 12px var(--s-spacing);
+  border-radius: var(--s-spacing);
+  border: 2px solid transparent;
+  width: 100%;
+  outline: none;
+  font-family: inherit;
+  font-size: 1.4rem;
+  color: var(--brown-dark);
+  background-color: var(--mist);
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.auth-form input:focus {
+  box-shadow: 0px 0px 10px 2px var(--brown-dark);
+  border-color: var(--brown-dark);
+}
+
+.btn-auth {
+  font-family: inherit;
+  font-size: 1.6rem;
+  font-weight: 700;
+  padding: 12px;
+  background-color: var(--brown-dark);
+  color: var(--mist);
+  border: none;
+  border-radius: 10px;
+  /* Un pequeño margen arriba para separarlo del último input */
+  margin-top: var(--xs-spacing);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-auth:hover {
+  background-color: var(--mist);
+  color: var(--brown-dark);
+}
+
+.auth-links {
+  text-align: center;
+  margin-top: var(--s-spacing);
+}
+
+.auth-links a {
+  color: var(--brown-dark);
+  text-decoration: none;
+  font-size: 1.4rem;
+  font-weight: bold;
+  transition: color 0.2s ease;
+}
+
+.auth-links a:hover {
+  color: var(--mist);
+}
