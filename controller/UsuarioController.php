@@ -23,13 +23,20 @@
         if ($prep->rowCount() > 0){
           return false;
         }
+        $prep = $this->con->prepare("SELECT nombre_usuario FROM usuario WHERE email = :email");
+        $prep->execute([
+          ":email" => $email,
+        ]);
+        if ($prep->rowCount() > 0){
+          return false;
+        }
         else{
           $prep = $this->con->prepare("INSERT INTO usuario (nombre_usuario, email, contrasena, pregunta_secreta, id_rol) VALUES (:username, :email, :password, :secret_question, 2)");
           $prep->execute([
             ":username" => $nombre_usuario,
             ":email" => $email,
             ":password" => password_hash($contrasena, PASSWORD_DEFAULT),
-            ":secret_question" => $pregunta_secreta,
+            ":secret_question" => password_hash($pregunta_secreta, PASSWORD_DEFAULT),
           ]);
           return true;
         }
@@ -60,7 +67,7 @@
 
     public function buscarUsuarioPorNombreUsuario(string $nombre_usuario): Usuario | null{
       try{
-        $prep = $this->con->prepare("SELECT nombre_usuario, contrasena FROM usuario WHERE nombre_usuario = :username");
+        $prep = $this->con->prepare("SELECT * FROM usuario WHERE nombre_usuario = :username");
         
 
         $prep->execute([

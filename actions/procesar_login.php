@@ -16,15 +16,16 @@
     $usuario_encontrado = $usuario_controller->validarLogin($nombre_usuario, $contrasena);
 
     if (empty($nombre_usuario) || empty($contrasena)){
-      $mensaje_negativo = "Todos los campos son obligatorios";
       header("Location: ../view/login.php?m=vacio");
     }
     else if (!$usuario_encontrado){
-      $mensaje_negativo = "Ingrese correctamente sus datos o cree una nueva cuenta";
       header("Location: ../view/login.php?m=credenciales");
     }
     else{
-      $nombreUsuario = $usuario_encontrado->getNombreUsuario();
       $_SESSION['usuario'] = $usuario_encontrado;
+      header("Location: ../view/pag_principal.php");
     }
+  }
+  else{
+    header("Location: ../view/login.php");
   }

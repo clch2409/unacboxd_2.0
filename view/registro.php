@@ -1,3 +1,15 @@
+<?php
+
+  $mensaje_negativo = "";
+
+  if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['m'])){
+    $mensaje_negativo = match($_GET['m']){
+      "vacio" => "Todos los campos son obligatorios.",
+      "existe" => "El nombre de usuario o el email ingresado ya existen"
+    };
+  }
+?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,10 +33,18 @@
         </div>
         <h2>Crear Cuenta</h2>
         <form class="auth-form" action="../actions/procesar_registro.php" method="POST">
-          <input type="text" name="nombre_usuario" placeholder="Nombre de usuario" required>
-          <input type="email" name="email" placeholder="Correo electrónico" required>
-          <input type="password" name="contrasena" placeholder="Contraseña" required>
-          <input type="text" name="pregunta_secreta" placeholder="¿Nombre de tu primera mascota?" required>
+          <input type="text" name="nombre_usuario" placeholder="Nombre de usuario">
+          <input type="email" name="email" placeholder="Correo electrónico">
+          <input type="password" name="contrasena" placeholder="Contraseña">
+          <input type="text" name="pregunta_secreta" placeholder="¿Nombre de tu primera mascota?">
+          <?php if (!empty($mensaje_negativo)): ?>
+            <div class="alert alert-error">
+              <span class="material-symbols-outlined alert-icon">error</span>
+              <span>
+                  <?= $mensaje_negativo ?>
+              </span>
+            </div>
+          <?php endif;?>
           <button type="submit" class="btn-auth">Registrarse</button>
         </form>
         <div class="auth-links">

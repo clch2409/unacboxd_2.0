@@ -33,8 +33,8 @@
         </div>
         <h2>Iniciar Sesión</h2>
         <form class="auth-form" action="../actions/procesar_login.php" method="POST">
-          <input type="text" name="nombre_usuario" placeholder="Nombre de usuario" required>
-          <input type="password" name="contrasena" placeholder="Contraseña" required>
+          <input type="text" name="nombre_usuario" placeholder="Nombre de usuario" >
+          <input type="password" name="contrasena" placeholder="Contraseña" >
           <button type="submit" class="btn-auth">Entrar</button>
           <?php if (!empty($mensaje_negativo)): ?>
             <div class="alert alert-error">

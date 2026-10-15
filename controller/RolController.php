@@ -1,6 +1,5 @@
 <?php
-  require_once (realpath(dirname(__FILE__)).'/../bd/bd_conection.php');
-  require_once (realpath(dirname(__FILE__)).'/../model/Usuario.php');
+  require_once __DIR__ . '/../model/Rol.php';
 
   class RolController{
 
