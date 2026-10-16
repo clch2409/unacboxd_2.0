@@ -88,6 +88,7 @@ function agregarFavoritoCalificada(evento) {
     pelicula.favorito = !pelicula.favorito;
     target.classList.toggle("favorite-heart", pelicula.favorito);
     target.classList.toggle("non-favorite", !pelicula.favorito);
+    enviarInteracion("favorita");
   }
 }
 
@@ -226,23 +227,55 @@ function agregarCalificacion() {
   });
 
   if (ratingSeleccionado > 0) {
-    let peliculaEncontrada = peliculas_original.find(
-      (peli) => peli.id == idPeliCalificar,
-    );
+    enviarInteracion("calificada", ratingSeleccionado);
+    cargarPeliculas();
+    // let peliculaEncontrada = peliculas_original.find(
+    //   (peli) => peli.id == idPeliCalificar,
+    // );
 
-    if (modificandoCalificacion) {
-      let ultimaPosicion = peliculaEncontrada.calificaciones.length - 1;
-      peliculaEncontrada.calificaciones[ultimaPosicion] = ratingSeleccionado;
-    } else {
-      peliculaEncontrada.calificaciones.push(ratingSeleccionado);
-      peliculaEncontrada.calificada = true;
-    }
+    // if (modificandoCalificacion) {
+    //   let ultimaPosicion = peliculaEncontrada.calificaciones.length - 1;
+    //   peliculaEncontrada.calificaciones[ultimaPosicion] = ratingSeleccionado;
+    // } else {
+    //   peliculaEncontrada.calificaciones.push(ratingSeleccionado);
+    //   peliculaEncontrada.calificada = true;
+    // }
 
-    peliculas_filtradas = peliculas_original;
-    mostrarPeliculas();
+    // peliculas_filtradas = peliculas_original;
+    // mostrarPeliculas();
   }
 
   cerrarModal();
+}
+
+function enviarInteracion(tipo, calificacion = null) {
+  try {
+    objeto_enviar = {
+      id_pelicula: idPeliCalificar,
+    };
+    if (tipo == "calificada") {
+      objeto_enviar.tipo = "calificada";
+      objeto_enviar.calificacion = calificacion;
+    } else if (tipo == "favorita") {
+      objeto_enviar.tipo = "favorita";
+    }
+    fetch("../../actions/api_interaciones.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(objeto_enviar),
+    })
+      .then((response) => response.json())
+      .then((respuesta) => {
+        console.log("Respuesta del servidor", respuesta);
+      })
+      .catch((error) => {
+        console.error("Error por parte del servidor: ", error);
+      });
+  } catch (error) {
+    console.error("Ha ocurrido un error en la solicitud", error);
+  }
 }
 
 function quitarSeleccionRating() {

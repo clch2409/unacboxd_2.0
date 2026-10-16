@@ -38,6 +38,21 @@
                 return null;
             }
         }
+
+        public function agregarCalificacion(int $id_pelicula, float $calificacion){
+            try{
+                $prep = $this->con->prepare("INSERT INTO calificacion (id_pelicula, calificacion) VALUES (:id_p, :cal)");
+                $prep->execute([
+                    ":id_p" => $id_pelicula,
+                    ":cal" => $calificacion
+                ]);
+                return true;
+            }
+            catch(PDOException $e){
+                var_dump($e);
+                return false;
+            }
+        }
         
         public function convertirCalificacion(array $calificacion_array_asoc, Pelicula $pelicula){
             $calificacion_objeto = new Calificacion(
