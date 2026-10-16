@@ -93,20 +93,71 @@
       }
     }
 
-    public function actualizarContrasena(string $nombre_usuario, string $contrasena_antigua, string $nueva_contrasena){
+    public function cambiarContrasena(string $nombre_usuario, string $contrasena_antigua, string $nueva_contrasena){
       try{
         $usuario_encontrado = $this->buscarUsuarioPorNombreUsuario($nombre_usuario);
+        $error = [
+          "error" => ""
+        ];
 
         if (!$usuario_encontrado){
-          return false;
+          $error['error'] = "existe";
+          return $error;
+        }
+        else if (password_verify($nueva_contrasena, $usuario_encontrado->getContrasena())){
+          $error['error'] = "iguales";
+          return $error;
         }
         else if (!password_verify($contrasena_antigua, $usuario_encontrado->getContrasena())){
-          return false;
+          $error['error'] = "actual";
+          return $error;
+        }
+        else{
+          $prep = $this->con->prepare("UPDATE usuario SET contrasena = :contra WHERE id_usuario = :id");
+          $nueva_contra_hash = password_hash($nueva_contrasena, PASSWORD_DEFAULT);
+          $prep->execute([
+            ":contra" => $nueva_contra_hash,
+            ":id" => $usuario_encontrado->getIdUsuario()
+          ]);
+          return true;
         }
       }
       catch(PDOException $e){
         var_dump($e);
-        return true;
+        return false;
+      }
+    }
+
+    public function recuperarContrasena(string $nombre_usuario, string $respuesta_secreta, string $nueva_contrasena){
+      try{
+        $usuario_encontrado = $this->buscarUsuarioPorNombreUsuario($nombre_usuario);
+        $error = ["error" => ""];
+
+        if (!$usuario_encontrado){
+          $error['error'] = "existe";
+          return $error;
+        }
+        else if (!password_verify($respuesta_secreta, $usuario_encontrado->getPreguntaSecreta())){
+          $error['error'] = "secreta";
+          return $error;
+        }
+        else if (password_verify($nueva_contrasena, $usuario_encontrado->getContrasena())){
+          $error['error'] = "iguales";
+          return $error;
+        }
+        else{
+          $prep = $this->con->prepare("UPDATE usuario SET contrasena = :contra WHERE id_usuario = :id");
+          $prep->execute([
+            ":contra" => password_hash($nueva_contrasena, PASSWORD_DEFAULT),
+            ":id" => $usuario_encontrado->getIdUsuario()
+          ]);
+          
+          return true;
+        }
+      }
+      catch(PDOException $e){
+        var_dump($e);
+        return false;
       }
     }
 

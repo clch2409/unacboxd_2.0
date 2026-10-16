@@ -48,7 +48,7 @@
         </form>
         <div class="auth-links">
           <a href="registro.php">¿No tienes cuenta? Regístrate</a><br><br>
-          <a href="recuperar.php">¿Olvidaste tu contraseña?</a>
+          <a href="recuperar.php">¿Olvidaste tu contraseña?</a><br><br>
           <a href="cambiar.php">Cambiar Contraseña</a>
         </div>
       </div>
