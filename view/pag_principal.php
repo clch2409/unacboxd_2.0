@@ -1,13 +1,17 @@
 <?php
-  require_once __DIR__ . '/../controller/PeliculaController.php';
-  $pelicula_controller = new PeliculaController();
-  $peliculas = [];
+  require __DIR__.'/../model/Usuario.php';
+  require __DIR__.'/../model/Rol.php';
 
-  if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+  session_start();
 
-    $peliculas = $pelicula_controller->listarPeliculas();
+  if (!isset($_SESSION['usuario'])){
+    header("Location: login.php");
   }
 
+  require_once __DIR__ . '/../controller/PeliculaController.php';
+  $pelicula_controller = new PeliculaController();
+  $usuario_logueado = $_SESSION['usuario'];
+  
 ?>
 
 <!DOCTYPE html>
@@ -29,7 +33,14 @@
 <body>
   <nav>
     <img class="img1" src="../assets/images/logo_sin_texto.png" alt="Logo">
-    <img class="img2" src="../assets/images/usuario.webp" alt="Usuario">
+    <div class="profile">
+      <?php if (!$usuario_logueado->getFotoPerfil()): ?>
+        <img class="img2" src="../assets/images/usuario.webp" alt="Usuario">
+      <?php else: ?>
+        <img class="img2" src="<?= $usuario_logueado->getFotoPerfil(); ?>" alt="Usuario">
+      <?php endif;?>    
+      <a href="../actions/logout.php">Cerrar Sesión</a>
+    </div>
   </nav>
   <p>Buscar por: </p>
   <form class="form-busqueda">
@@ -70,12 +81,7 @@
   </form>
 
   <div class="contenedor-img">
-    <?php foreach ($peliculas as $pelicula) : ?>
-      <div class="contenedor-peli">
-        <p class="peli-rating"><?= $pelicula->calcularPromedioCalificaciones() ?? 'N/A' ?></p>
-        <img src="../<?= $pelicula->getPoster() ?>" alt="<?= $pelicula->getTitulo() ?>">
-      </div>
-    <?php endforeach; ?>
+    
   </div>
 
   <dialog id="rating-dialog">

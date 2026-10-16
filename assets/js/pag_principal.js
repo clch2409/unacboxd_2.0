@@ -1,5 +1,5 @@
-// let peliculas_original = [...peliculas];
-// let peliculas_filtradas = peliculas_original;
+let peliculas_original = [];
+let peliculas_filtradas = [];
 let tipoBusqueda = "";
 let idPeliCalificar = undefined;
 let modificandoCalificacion = false;
@@ -36,6 +36,25 @@ rating_send.addEventListener("click", agregarCalificacion);
 
 // mostrarPeliculas();
 
+async function cargarPeliculas() {
+  try {
+    const respuesta = await fetch("../../actions/api_peliculas.php");
+
+    if (!respuesta.ok) {
+      throw new Error("Error en la autenticación o en el servidor");
+    }
+
+    const datosJSON = await respuesta.json();
+
+    peliculas_original = datosJSON;
+    peliculas_filtradas = [...peliculas_original];
+    mostrarPeliculas();
+  } catch (error) {
+    console.error("Error al cargar las películas:", error);
+    contenedor_img.innerHTML = `<p style="color: white;">Error al cargar el catálogo.</p>`;
+  }
+}
+
 function mostrarPeliculas() {
   let html = ``;
 
@@ -45,8 +64,8 @@ function mostrarPeliculas() {
 
     html += `
       <div class="contenedor-peli">
-        <p class="peli-rating">${obtenerRatingPelicula(peli).toFixed(2)}</p>
-        <img src="${peli.poster}" alt="${peli.titulo}">
+        <p class="peli-rating">${peli.rating}</p>
+        <img src="../${peli.poster}" alt="${peli.titulo}">
         <span class="material-symbols-outlined ${claseFavorito} heart" id="peli-${peli.id}">favorite</span>
         <span class="material-symbols-outlined ${claseCalificada} star" id="peli-${peli.id}">star</span>
       </div>`;
@@ -54,6 +73,8 @@ function mostrarPeliculas() {
 
   contenedor_img.innerHTML = html;
 }
+
+cargarPeliculas();
 
 function agregarFavoritoCalificada(evento) {
   const target = evento.target;
@@ -101,7 +122,6 @@ function cerrarModal() {
 }
 
 function resetPeliculas() {
-  peliculas_original = [...peliculas];
   peliculas_filtradas = peliculas_original;
   mostrarPeliculas();
 }
@@ -117,32 +137,12 @@ function filtrarPeliculas(evento) {
     peliculas_filtradas = peliculas_original.filter((peli) => peli.calificada);
   } else if (id_target == "topMejor") {
     peliculas_filtradas = [
-      ...peliculas_original.sort(
-        (peli, peli2) =>
-          peli2.calificaciones.reduce(
-            (acumulador, calificacion) => acumulador + calificacion,
-            0,
-          ) -
-          peli.calificaciones.reduce(
-            (acumulador, calificacion) => acumulador + calificacion,
-            0,
-          ),
-      ),
+      ...peliculas_original.sort((peli, peli2) => peli2.rating - peli.rating),
     ];
   } else if (id_target == "topPeor") {
     console.log("entre");
     peliculas_filtradas = [
-      ...peliculas_original.sort(
-        (peli, peli2) =>
-          peli.calificaciones.reduce(
-            (acumulador, calificacion) => acumulador + calificacion,
-            0,
-          ) -
-          peli2.calificaciones.reduce(
-            (acumulador, calificacion) => acumulador + calificacion,
-            0,
-          ),
-      ),
+      ...peliculas_original.sort((peli, peli2) => peli.rating - peli2.rating),
     ];
   }
   console.log(peliculas_filtradas);

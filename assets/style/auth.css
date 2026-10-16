@@ -146,9 +146,45 @@ body {
   color: var(--mist);
 }
 
-/* ========================================= */
-/* MENSAJES DE ALERTA Y ERRORES              */
-/* ========================================= */
+/* Estilos para el input de archivo */
+.file-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--xs-spacing);
+  margin-top: var(--xs-spacing);
+}
+
+.file-input-container label {
+  font-size: 1.3rem;
+  color: var(--mist);
+  font-weight: bold;
+}
+
+.file-input-container input[type="file"] {
+  font-size: 1.2rem;
+  color: var(--mist);
+  cursor: pointer;
+}
+
+.file-input-container input[type="file"]::file-selector-button {
+  padding: 8px var(--m-spacing);
+  border-radius: var(--s-spacing);
+  background-color: var(--brown);
+  color: var(--mist);
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-family: inherit;
+  margin-right: var(--m-spacing);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.file-input-container input[type="file"]::file-selector-button:hover {
+  background-color: var(--mist);
+  color: var(--brown-dark);
+}
 
 .alert {
   padding: 12px var(--s-spacing);

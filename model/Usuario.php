@@ -8,6 +8,7 @@ class Usuario
     private string $contrasena;
     private string $preguntaSecreta;
     private ?Rol $rol;
+    private ?string $foto_perfil;
     private array $peliculas = [];
 
     public function __construct(
@@ -16,6 +17,7 @@ class Usuario
         string $contrasena,
         string $preguntaSecreta,
         ?Rol $rol = null,
+        ?string $foto_perfil = null,
         ?int $idUsuario = null
     ) {
         $this->idUsuario = $idUsuario;
@@ -24,6 +26,7 @@ class Usuario
         $this->contrasena = $contrasena;
         $this->preguntaSecreta = $preguntaSecreta;
         $this->rol = $rol;
+        $this->foto_perfil = $foto_perfil;
     }
 
     public function getIdUsuario(): ?int
@@ -79,6 +82,14 @@ class Usuario
     public function setRol(?Rol $rol): void
     {
         $this->rol = $rol;
+    }
+
+    public function getFotoPerfil(): ?string{
+        return $this->foto_perfil;
+    }
+
+    public function setFotoPefil(string $foto_perfil): void{
+        $this->foto_perfil = $foto_perfil;
     }
 
     public function getPeliculas(): array

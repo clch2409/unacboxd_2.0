@@ -14,20 +14,40 @@
     $preg_sec = limpiarTexto($_POST['pregunta_secreta']);
     if (empty($username) || empty($password) || empty($email) || empty($preg_sec)){
       header("Location: ../view/registro.php?m=vacio");
+      exit();
     }
     else{
+      $ruta_imagen_bd = null;
 
-      $usuario_creado_correctamente = $usuario_controller->crearUsuario($username, $email, $password, $preg_sec);
+      if (isset($_FILES['imagen_perfil']) && $_FILES['imagen_perfil']['error'] == 0){
+        $nombre_original = $_FILES['imagen_perfil']['name'];
+        $tmp_name = $_FILES['imagen_perfil']['tmp_name'];
+
+        $extension = pathinfo($nombre_original, PATHINFO_EXTENSION);
+
+        $nombre_unico = uniqid("perfil_") . '.' . $extension;
+        $ruta_destino = '../assets/images/perfiles/' . $nombre_unico;
+
+        if (move_uploaded_file($tmp_name, $ruta_destino)){
+          $ruta_imagen_bd = $ruta_destino;
+        }
+      }
+
+      $usuario_creado_correctamente = $usuario_controller->crearUsuario($username, $email, $password, $preg_sec, $ruta_imagen_bd);
+
 
       if (!$usuario_creado_correctamente){
         header("Location: ../view/registro.php?m=existe");
+        exit();
       }
       else{
         header("Location: ../view/login.php");
+        exit();
       }
     }
-    exit();
+    
   }
   else{
     header("Location: ../view/registro.php?");
+    exit();
   }

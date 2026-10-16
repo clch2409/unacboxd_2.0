@@ -14,7 +14,7 @@
       $this->con = $con ?? $this->bd->conectar();
     }
 
-    public function crearUsuario(string $nombre_usuario, string $email, string $contrasena, string $pregunta_secreta){
+    public function crearUsuario(string $nombre_usuario, string $email, string $contrasena, string $pregunta_secreta, ?string $imagen_perfil){
       try{
         $prep = $this->con->prepare("SELECT nombre_usuario FROM usuario WHERE nombre_usuario = :username");
         $prep->execute([
@@ -31,12 +31,13 @@
           return false;
         }
         else{
-          $prep = $this->con->prepare("INSERT INTO usuario (nombre_usuario, email, contrasena, pregunta_secreta, id_rol) VALUES (:username, :email, :password, :secret_question, 2)");
+          $prep = $this->con->prepare("INSERT INTO usuario (nombre_usuario, email, contrasena, pregunta_secreta, id_rol, foto_perfil) VALUES (:username, :email, :password, :secret_question, 2, :foto_perfil)");
           $prep->execute([
             ":username" => $nombre_usuario,
             ":email" => $email,
             ":password" => password_hash($contrasena, PASSWORD_DEFAULT),
             ":secret_question" => password_hash($pregunta_secreta, PASSWORD_DEFAULT),
+            ":foto_perfil" => $imagen_perfil
           ]);
           return true;
         }
@@ -117,7 +118,8 @@
         $usuario_array_asoc['contrasena'],
         $usuario_array_asoc['pregunta_secreta'],
         $rol_controller->obtenerRolPorId($usuario_array_asoc['id_rol']),
-        $usuario_array_asoc['id_usuario']
+        $usuario_array_asoc['foto_perfil'],
+        $usuario_array_asoc['id_usuario'],
       );
     }
 

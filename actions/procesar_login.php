@@ -17,15 +17,19 @@
 
     if (empty($nombre_usuario) || empty($contrasena)){
       header("Location: ../view/login.php?m=vacio");
+      exit();
     }
     else if (!$usuario_encontrado){
       header("Location: ../view/login.php?m=credenciales");
+      exit();
     }
     else{
       $_SESSION['usuario'] = $usuario_encontrado;
       header("Location: ../view/pag_principal.php");
+      exit();
     }
   }
   else{
     header("Location: ../view/login.php");
+    exit();
   }

@@ -32,19 +32,24 @@
             <img src="../assets/images/logo_unacboxd.png" alt="Logo Unacboxd" class="auth-logo">
         </div>
         <h2>Crear Cuenta</h2>
-        <form class="auth-form" action="../actions/procesar_registro.php" method="POST">
+        <form class="auth-form" action="../actions/procesar_registro.php" method="POST" enctype="multipart/form-data">
           <input type="text" name="nombre_usuario" placeholder="Nombre de usuario">
           <input type="email" name="email" placeholder="Correo electrónico">
           <input type="password" name="contrasena" placeholder="Contraseña">
           <input type="text" name="pregunta_secreta" placeholder="¿Nombre de tu primera mascota?">
+          
+          <div class="file-input-container">
+            <label for="imagen_perfil">Imagen de perfil (Opcional):</label>
+            <input type="file" name="imagen_perfil" id="imagen_perfil" accept="image/png, image/jpeg, image/jpg">
+          </div>
+
           <?php if (!empty($mensaje_negativo)): ?>
             <div class="alert alert-error">
               <span class="material-symbols-outlined alert-icon">error</span>
-              <span>
-                  <?= $mensaje_negativo ?>
-              </span>
+              <span><?= $mensaje_negativo ?></span>
             </div>
           <?php endif;?>
+          
           <button type="submit" class="btn-auth">Registrarse</button>
         </form>
         <div class="auth-links">

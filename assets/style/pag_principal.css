@@ -42,14 +42,36 @@ p {
 nav {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 10px 20px;
   background-color: var(--steel);
   border-bottom: 3px solid var(--brown);
 }
 
-nav img {
+.profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
+img,
+.profile img {
   width: 45px;
   border-radius: 50%;
+}
+
+.profile a {
+  text-decoration: none;
+  color: inherit;
+  font-size: 1.2rem;
+  transition:
+    color 0.2s ease-in,
+    font-weight 0.2s ease-in;
+}
+
+.profile a:hover {
+  color: var(--brown-dark);
 }
 
 /* Estilo del formulario de busqueda */
