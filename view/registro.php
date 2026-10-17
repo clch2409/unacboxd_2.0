@@ -5,6 +5,7 @@
   if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['m'])){
     $mensaje_negativo = match($_GET['m']){
       "vacio" => "Todos los campos son obligatorios.",
+      "pass_dif" => "Su contraseña repetida no coinciden.",
       "existe" => "El nombre de usuario o el email ingresado ya existen"
     };
   }
@@ -36,6 +37,7 @@
           <input type="text" name="nombre_usuario" placeholder="Nombre de usuario">
           <input type="email" name="email" placeholder="Correo electrónico">
           <input type="password" name="contrasena" placeholder="Contraseña">
+          <input type="password" name="repetir_contrasena" placeholder="Repita su contraseña">
           <input type="text" name="pregunta_secreta" placeholder="¿Nombre de tu primera mascota?">
           
           <div class="file-input-container">

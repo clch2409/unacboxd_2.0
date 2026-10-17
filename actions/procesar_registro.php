@@ -3,17 +3,22 @@
   require_once __DIR__."/../controller/UsuarioController.php";
 
   $usuario_controller = new UsuarioController();
-  $username=$password=$email=$preg_sec="";
+  $username=$password=$repeat_password=$email=$preg_sec="";
   $usuario_creado_correctamente = null;
 
 
   if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $username = limpiarTexto($_POST['nombre_usuario']);
     $password = limpiarTexto($_POST['contrasena']);
+    $repeat_password = limpiarTexto($_POST['repetir_contrasena']);
     $email = limpiarTexto($_POST['email']);
     $preg_sec = limpiarTexto($_POST['pregunta_secreta']);
-    if (empty($username) || empty($password) || empty($email) || empty($preg_sec)){
+    if (empty($username) || empty($password) || empty($repeat_password) || empty($email) || empty($preg_sec)){
       header("Location: ../view/registro.php?m=vacio");
+      exit();
+    }
+    else if ($password != $repeat_password){
+      header("Location: ../view/registro.php?m=pass_dif");
       exit();
     }
     else{
