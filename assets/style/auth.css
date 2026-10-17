@@ -84,6 +84,34 @@ body {
   gap: 12px;
 }
 
+.password-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-field input[type="password"],
+.password-field input[type="text"] {
+  padding-right: 84px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: var(--s-spacing);
+  border: none;
+  background: transparent;
+  color: var(--brown);
+  font-family: inherit;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.password-toggle:hover,
+.password-toggle:focus {
+  color: var(--brown-dark);
+}
+
 .auth-form input[type="text"],
 .auth-form input[type="password"],
 .auth-form input[type="email"] {

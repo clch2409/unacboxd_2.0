@@ -65,7 +65,9 @@ function mostrarPeliculas() {
     html += `
       <div class="contenedor-peli">
         <p class="peli-rating">${peli.rating}</p>
-        <img src="../${peli.poster}" alt="${peli.titulo}">
+        <a href="info_pelicula.php?id=${peli.id}">
+          <img src="../${peli.poster}" alt="${peli.titulo}">
+        </a>
         <span class="material-symbols-outlined ${claseFavorito} heart" id="peli-${peli.id}">favorite</span>
         <span class="material-symbols-outlined ${claseCalificada} star" id="peli-${peli.id}">star</span>
       </div>`;
