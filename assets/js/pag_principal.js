@@ -1,3 +1,4 @@
+let peliculas = [];
 let peliculas_original = [];
 let peliculas_filtradas = [];
 let tipoBusqueda = "";
@@ -46,7 +47,8 @@ async function cargarPeliculas() {
 
     const datosJSON = await respuesta.json();
 
-    peliculas_original = datosJSON;
+    peliculas = [...datosJSON];
+    peliculas_original = [...datosJSON];
     peliculas_filtradas = [...peliculas_original];
     mostrarPeliculas();
   } catch (error) {
@@ -125,7 +127,8 @@ function cerrarModal() {
 }
 
 function resetPeliculas() {
-  peliculas_filtradas = peliculas_original;
+  console.log(peliculas);
+  peliculas_filtradas = peliculas;
   mostrarPeliculas();
 }
 
@@ -143,7 +146,6 @@ function filtrarPeliculas(evento) {
       ...peliculas_original.sort((peli, peli2) => peli2.rating - peli.rating),
     ];
   } else if (id_target == "topPeor") {
-    console.log("entre");
     peliculas_filtradas = [
       ...peliculas_original.sort((peli, peli2) => peli.rating - peli2.rating),
     ];

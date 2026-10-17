@@ -34,9 +34,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* Usamos 100dvh (Dynamic Viewport Height) que se adapta mejor a las pantallas modernas */
   min-height: 100dvh;
-  /* Añadimos un padding externo por si la pantalla es muy pequeña, la caja no choque con los bordes */
   padding: var(--m-spacing);
 }
 
