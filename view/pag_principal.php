@@ -8,10 +8,7 @@
     header("Location: login.php");
   }
 
-  require_once __DIR__ . '/../controller/PeliculaController.php';
-  $pelicula_controller = new PeliculaController();
   $usuario_logueado = $_SESSION['usuario'];
-  
 ?>
 
 <!DOCTYPE html>

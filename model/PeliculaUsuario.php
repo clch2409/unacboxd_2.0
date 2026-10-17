@@ -2,31 +2,36 @@
 
 class PeliculaUsuario
 {
-    private Pelicula $pelicula;
-    private Usuario $usuario;
+    private ?int $idPeliculaUsuario;
+    private int $idPelicula;
+    private int $idUsuario;
     private string $tipo;
-    private ?bool $activo;
 
     public function __construct(
-        Pelicula $pelicula,
-        Usuario $usuario,
+        int $idPelicula,
+        int $idUsuario,
         string $tipo,
-        ?bool $activo = null
+        ?int $idPeliculaUsuario = null
     ) {
-        $this->pelicula = $pelicula;
-        $this->usuario = $usuario;
+        $this->idPeliculaUsuario = $idPeliculaUsuario;
+        $this->idPelicula = $idPelicula;
+        $this->idUsuario = $idUsuario;
         $this->tipo = $tipo;
-        $this->activo = $activo;
     }
 
-    public function getPelicula(): Pelicula
+    public function getIdPeliculaUsuario(): ?int
     {
-        return $this->pelicula;
+        return $this->idPeliculaUsuario;
     }
 
-    public function getUsuario(): Usuario
+    public function getIdPelicula(): int
     {
-        return $this->usuario;
+        return $this->idPelicula;
+    }
+
+    public function getIdUsuario(): int
+    {
+        return $this->idUsuario;
     }
 
     public function getTipo(): string
@@ -37,15 +42,5 @@ class PeliculaUsuario
     public function setTipo(string $tipo): void
     {
         $this->tipo = $tipo;
-    }
-
-    public function getActivo(): ?bool
-    {
-        return $this->activo;
-    }
-
-    public function setActivo(?bool $activo): void
-    {
-        $this->activo = $activo;
     }
 }

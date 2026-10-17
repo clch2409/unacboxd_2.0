@@ -88,7 +88,7 @@ function agregarFavoritoCalificada(evento) {
     pelicula.favorito = !pelicula.favorito;
     target.classList.toggle("favorite-heart", pelicula.favorito);
     target.classList.toggle("non-favorite", !pelicula.favorito);
-    enviarInteracion("favorita");
+    enviarInteracion(pelicula.id, "favorita");
   }
 }
 
@@ -227,7 +227,7 @@ function agregarCalificacion() {
   });
 
   if (ratingSeleccionado > 0) {
-    enviarInteracion("calificada", ratingSeleccionado);
+    enviarInteracion(idPeliCalificar, "calificada", ratingSeleccionado);
     cargarPeliculas();
     // let peliculaEncontrada = peliculas_original.find(
     //   (peli) => peli.id == idPeliCalificar,
@@ -248,10 +248,13 @@ function agregarCalificacion() {
   cerrarModal();
 }
 
-function enviarInteracion(tipo, calificacion = null) {
+async function enviarInteracion(id_pelicula, tipo = null, calificacion = null) {
   try {
-    objeto_enviar = {
-      id_pelicula: idPeliCalificar,
+    console.log(id_pelicula);
+    let objeto_enviar = {
+      id_pelicula: id_pelicula,
+      tipo: tipo,
+      calificacion: calificacion,
     };
     if (tipo == "calificada") {
       objeto_enviar.tipo = "calificada";
@@ -259,7 +262,8 @@ function enviarInteracion(tipo, calificacion = null) {
     } else if (tipo == "favorita") {
       objeto_enviar.tipo = "favorita";
     }
-    fetch("../../actions/api_interaciones.php", {
+    console.log(JSON.stringify(objeto_enviar));
+    await fetch("../../actions/api_interaciones.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

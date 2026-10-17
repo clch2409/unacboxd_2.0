@@ -58,12 +58,12 @@ CREATE TABLE pelicula_actor(
 );
 
 CREATE TABLE pelicula_usuario(
-	id_pelicula INT NOT NULL,
+	id_pelicula_usuario INT PRIMARY KEY AUTO_INCREMENT,
+	id_pelicula INT NOT null,
 	id_usuario INT NOT NULL,
-	tipo VARCHAR(20) NOT NULL,
-	activo BOOLEAN,
-    PRIMARY KEY (id_pelicula, id_usuario)
+	tipo VARCHAR(50) NOT NULL
 );
+
 
 CREATE TABLE calificacion(
 	id_calificacion INT PRIMARY KEY AUTO_INCREMENT,
@@ -85,5 +85,5 @@ ALTER TABLE pelicula_genero ADD CONSTRAINT FK_ID_GENERO FOREIGN KEY (id_genero) 
 ALTER TABLE pelicula_actor ADD CONSTRAINT FK_ID_PELICULA_A FOREIGN KEY (id_pelicula) REFERENCES pelicula(id_pelicula);
 ALTER TABLE pelicula_actor ADD CONSTRAINT FK_ID_ACTOR FOREIGN KEY (id_actor) REFERENCES actor(id_actor);
 
-ALTER TABLE pelicula_usuario ADD CONSTRAINT FK_ID_PELICULA_U FOREIGN KEY (id_pelicula) REFERENCES pelicula(id_pelicula);
+ALTER TABLE pelicula_usuario ADD CONSTRAINT FK_ID_PELICULA FOREIGN KEY (id_pelicula) REFERENCES pelicula(id_pelicula);
 ALTER TABLE pelicula_usuario ADD CONSTRAINT FK_ID_USUARIO FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario);
