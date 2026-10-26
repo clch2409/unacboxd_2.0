@@ -59,7 +59,6 @@
   </nav>
 
   <main class="movie-info-container">
-    <!-- Columna Izquierda: Póster -->
     <div class="movie-poster-large">
       <img src="../<?= $pelicula->getPoster(); ?>" alt="<?= $pelicula->getTitulo(); ?>">
     </div>
@@ -82,7 +81,6 @@
           <h3>Elenco</h3>
           <p>
             <?php 
-              // Convertimos el arreglo de objetos Actor a un arreglo de nombres y los unimos con comas
               $nombres_actores = array_map(fn($actor) => $actor->getNombre(), $pelicula->getActores());
               echo implode(", ", $nombres_actores);
             ?>

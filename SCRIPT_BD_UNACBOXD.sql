@@ -13,6 +13,7 @@ CREATE TABLE usuario(
 	email VARCHAR(100) NOT NULL,
 	contrasena VARCHAR(255) NOT NULL,
 	pregunta_secreta VARCHAR(255) NOT NULL,
+	foto_perfil VARCHAR(255) NULL,
 	id_rol INT NOT NULL
 );
 
