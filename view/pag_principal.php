@@ -35,7 +35,10 @@
         <img class="img2" src="../assets/images/usuario.webp" alt="Usuario">
       <?php else: ?>
         <img class="img2" src="<?= $usuario_logueado->getFotoPerfil(); ?>" alt="Usuario">
-      <?php endif;?>    
+      <?php endif;?>
+      <?php if ($usuario_logueado->getRol() && $usuario_logueado->getRol()->getNombre() == 'admin'): ?>
+        <a href="admin_panel.php">Panel Admin</a>
+      <?php endif;?>
       <a href="../actions/logout.php">Cerrar Sesión</a>
     </div>
   </nav>

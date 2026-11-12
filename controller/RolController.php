@@ -1,4 +1,5 @@
 <?php
+  require_once __DIR__ . '/../bd/bd_conection.php';
   require_once __DIR__ . '/../model/Rol.php';
 
   class RolController{
@@ -6,10 +7,22 @@
     private Database $bd;
     private PDO $con;
 
-    public function __construct()
+    public function __construct(?PDO $con = null)
     {
       $this->bd = new Database();
       $this->con = $con ?? $this->bd->conectar();
+    }
+
+    public function listarRoles(){
+      try{
+        $query = $this->con->query("SELECT * FROM rol ORDER BY id_rol");
+        $roles_array = $query->fetchAll(PDO::FETCH_ASSOC);
+        return array_map(fn($rol) => new Rol($rol['nombre'], $rol['id_rol']), $roles_array);
+      }
+      catch(PDOException $e){
+        error_log($e->getMessage());
+        return null;
+      }
     }
 
     public function obtenerRolPorId(int $id_rol){

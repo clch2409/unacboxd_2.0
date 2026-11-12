@@ -25,6 +25,12 @@
     }
     else{
       $_SESSION['usuario'] = $usuario_encontrado;
+      $rol_usuario = $usuario_encontrado->getRol();
+
+      if ($rol_usuario && $rol_usuario->getNombre() == 'admin'){
+        header("Location: ../view/admin_panel.php");
+        exit();
+      }
       header("Location: ../view/pag_principal.php");
       exit();
     }

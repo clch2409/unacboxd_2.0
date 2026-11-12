@@ -4,7 +4,7 @@ class DataBase{
   
     private $host = "localhost";
     private $user = "root";
-    private $password = "";
+    private $password = "root";
     private $database = "unacboxd";
 
     private string $string_conection;

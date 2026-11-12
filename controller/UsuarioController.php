@@ -8,13 +8,13 @@
     private Database $bd;
     private PDO $con;
 
-    public function __construct()
+    public function __construct(?PDO $con = null)
     {
       $this->bd = new Database();
       $this->con = $con ?? $this->bd->conectar();
     }
 
-    public function crearUsuario(string $nombre_usuario, string $email, string $contrasena, string $pregunta_secreta, ?string $imagen_perfil){
+    public function crearUsuario(string $nombre_usuario, string $email, string $contrasena, string $pregunta_secreta, ?string $imagen_perfil, int $id_rol = 2){
       try{
         $prep = $this->con->prepare("SELECT nombre_usuario FROM usuario WHERE nombre_usuario = :username");
         $prep->execute([
@@ -31,12 +31,13 @@
           return false;
         }
         else{
-          $prep = $this->con->prepare("INSERT INTO usuario (nombre_usuario, email, contrasena, pregunta_secreta, id_rol, foto_perfil) VALUES (:username, :email, :password, :secret_question, 2, :foto_perfil)");
+          $prep = $this->con->prepare("INSERT INTO usuario (nombre_usuario, email, contrasena, pregunta_secreta, id_rol, foto_perfil) VALUES (:username, :email, :password, :secret_question, :id_rol, :foto_perfil)");
           $prep->execute([
             ":username" => $nombre_usuario,
             ":email" => $email,
             ":password" => password_hash($contrasena, PASSWORD_DEFAULT),
             ":secret_question" => password_hash($pregunta_secreta, PASSWORD_DEFAULT),
+            ":id_rol" => $id_rol,
             ":foto_perfil" => $imagen_perfil
           ]);
           return true;
@@ -161,8 +162,112 @@
       }
     }
 
-    public function crearObjetoUsuario(array $usuario_array_asoc): Usuario{
-      $rol_controller = new RolController();
+    public function listarUsuarios(){
+      try{
+        $query = $this->con->query("SELECT * FROM usuario ORDER BY id_usuario");
+        $usuarios_array = $query->fetchAll(PDO::FETCH_ASSOC);
+        $rol_controller = new RolController($this->con);
+        return array_map(fn($usuario) => $this->crearObjetoUsuario($usuario, $rol_controller), $usuarios_array);
+      }
+      catch(PDOException $e){
+        error_log($e->getMessage());
+        return null;
+      }
+    }
+
+    public function buscarUsuarioPorId(int $id_usuario): Usuario | null{
+      try{
+        $prep = $this->con->prepare("SELECT * FROM usuario WHERE id_usuario = :id");
+        $prep->execute([
+          ":id" => $id_usuario
+        ]);
+        $usuario_encontrado = $prep->fetch(PDO::FETCH_ASSOC);
+
+        if ($usuario_encontrado){
+          return $this->crearObjetoUsuario($usuario_encontrado);
+        }
+        else{
+          return null;
+        }
+      }
+      catch(PDOException $e){
+        error_log($e->getMessage());
+        return null;
+      }
+    }
+
+    public function actualizarUsuario(int $id_usuario, string $nombre_usuario, string $email, int $id_rol, ?string $nueva_contrasena = null){
+      try{
+        $error = ["error" => ""];
+
+        $prep = $this->con->prepare("SELECT id_usuario FROM usuario WHERE (nombre_usuario = :username OR email = :email) AND id_usuario != :id");
+        $prep->execute([
+          ":username" => $nombre_usuario,
+          ":email" => $email,
+          ":id" => $id_usuario
+        ]);
+        if ($prep->fetch(PDO::FETCH_ASSOC)){
+          $error['error'] = "existe";
+          return $error;
+        }
+
+        $rol_controller = new RolController($this->con);
+        if (!$rol_controller->obtenerRolPorId($id_rol)){
+          $error['error'] = "rol";
+          return $error;
+        }
+
+        $parametros = [
+          ":username" => $nombre_usuario,
+          ":email" => $email,
+          ":id_rol" => $id_rol,
+          ":id" => $id_usuario
+        ];
+        $consulta = "UPDATE usuario SET nombre_usuario = :username, email = :email, id_rol = :id_rol";
+
+        if (!empty($nueva_contrasena)){
+          $consulta .= ", contrasena = :contra";
+          $parametros[":contra"] = password_hash($nueva_contrasena, PASSWORD_DEFAULT);
+        }
+
+        $prep = $this->con->prepare($consulta." WHERE id_usuario = :id");
+        $prep->execute($parametros);
+        return true;
+      }
+      catch(PDOException $e){
+        error_log($e->getMessage());
+        return false;
+      }
+    }
+
+    public function eliminarUsuario(int $id_usuario){
+      try{
+        $this->con->beginTransaction();
+
+        $prep = $this->con->prepare("DELETE FROM pelicula_usuario WHERE id_usuario = :id");
+        $prep->execute([
+          ":id" => $id_usuario
+        ]);
+
+        $prep = $this->con->prepare("DELETE FROM usuario WHERE id_usuario = :id");
+        $prep->execute([
+          ":id" => $id_usuario
+        ]);
+
+        $this->con->commit();
+        return true;
+      }
+      catch(PDOException $e){
+        if ($this->con->inTransaction()){
+          $this->con->rollBack();
+        }
+        error_log($e->getMessage());
+        return false;
+      }
+    }
+
+    public function crearObjetoUsuario(array $usuario_array_asoc, ?RolController $rol_controller = null): Usuario{
+      $rol_controller = $rol_controller ?? new RolController($this->con);
       return new Usuario(
         $usuario_array_asoc['nombre_usuario'],
         $usuario_array_asoc['email'],

@@ -36,7 +36,7 @@
             <img src="../assets/images/logo_unacboxd.png" alt="Logo Unacboxd" class="auth-logo">
         </div>
         <h2>Recuperar Contraseña</h2>
-        <form class="auth-form" action="../actions/procesar_recuperar.php" method="POST">
+        <form class="auth-form" action="../actions/procesar_recuperacion.php" method="POST">
           <input type="text" name="nombre_usuario" placeholder="Nombre de usuario">
           <input type="password" name="pregunta_secreta" placeholder="Respuesta secreta (Primera mascota)">
           <input type="password" name="contrasena_nueva" placeholder="Nueva contraseña">
